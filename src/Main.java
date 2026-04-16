@@ -1,19 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-// Goods Bogie class
-class GoodsBogie {
-    String type;   // e.g., Cylindrical, Box
-    String cargo;  // e.g., Petroleum, Coal
+// Bogie class
+class Bogie {
+    String name;
+    int capacity;
 
-    public GoodsBogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
-    }
-
-    @Override
-    public String toString() {
-        return type + " Bogie carrying " + cargo;
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
 }
 
@@ -21,38 +17,50 @@ public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create Goods Bogies
-        List<GoodsBogie> goodsBogies = new ArrayList<>();
+        // Create large dataset for meaningful measurement
+        List<Bogie> bogies = new ArrayList<>();
 
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Box", "Coal"));
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Box", "Grains"));
-
-        // Display bogies
-        System.out.println("\nGoods Bogies:");
-        goodsBogies.forEach(System.out::println);
-
-        // --- UC12: Safety Validation ---
-        System.out.println("\nChecking safety compliance...");
-
-        boolean isSafe = goodsBogies.stream()
-                .allMatch(b ->
-                        // Rule: Cylindrical bogie → only Petroleum allowed
-                        (!b.type.equals("Cylindrical") || b.cargo.equals("Petroleum"))
-                );
-
-        // Display Result
-        if (isSafe) {
-            System.out.println("Train is SAFE for operation.");
-        } else {
-            System.out.println("Train is NOT SAFE! Rule violation detected.");
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Sleeper", 72));
+            bogies.add(new Bogie("AC Chair", 78));
+            bogies.add(new Bogie("First Class", 24));
         }
 
-        // Program continues
+        // --- Loop-Based Filtering ---
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > 60) {
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        // --- Stream-Based Filtering ---
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // --- Results ---
+        System.out.println("\nPerformance Comparison:");
+        System.out.println("Loop Time   : " + loopTime + " ns");
+        System.out.println("Stream Time : " + streamTime + " ns");
+
+        // Optional: verify both results are same
+        System.out.println("\nResult Size Check:");
+        System.out.println("Loop Result Size   : " + loopResult.size());
+        System.out.println("Stream Result Size : " + streamResult.size());
+
         System.out.println("\nSystem ready for further operations.");
     }
 }
