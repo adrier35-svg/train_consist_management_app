@@ -1,5 +1,5 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrainConsistApp {
 
@@ -7,51 +7,49 @@ public class TrainConsistApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Sorted array of bogie IDs
-        String[] bogieIds = {"B101", "B205", "B309", "B412", "B523"};
+        // Bogie collection (try empty vs filled)
+        List<String> bogieIds = new ArrayList<>();
 
-        // (Safety) Ensure sorted
-        Arrays.sort(bogieIds);
+        // Uncomment below to test valid scenario
+        // bogieIds.add("B101");
+        // bogieIds.add("B205");
 
-        // Display sorted bogies
-        System.out.println("\nSorted Bogie IDs:");
-        System.out.println(Arrays.toString(bogieIds));
+        String searchKey = "B101";
 
-        // User input
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\nEnter Bogie ID to search: ");
-        String key = scanner.nextLine();
+        try {
+            searchBogie(bogieIds, searchKey);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        // --- Binary Search ---
-        int low = 0;
-        int high = bogieIds.length - 1;
+        System.out.println("\nSystem continues safely...");
+    }
+
+    // Search method with fail-fast validation
+    public static void searchBogie(List<String> bogieIds, String key) {
+
+        // --- UC20: Defensive Check ---
+        if (bogieIds.isEmpty()) {
+            throw new IllegalStateException(
+                    "Cannot perform search. Train consist is empty!"
+            );
+        }
+
+        // --- Linear Search ---
         boolean found = false;
 
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int comparison = key.compareTo(bogieIds[mid]);
-
-            if (comparison == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(key)) {
                 found = true;
                 break;
-            } else if (comparison < 0) {
-                high = mid - 1;  // Search left half
-            } else {
-                low = mid + 1;   // Search right half
             }
         }
 
-        // Display result
+        // Result
         if (found) {
-            System.out.println("Bogie ID " + key + " FOUND in the train.");
+            System.out.println("Bogie ID " + key + " FOUND.");
         } else {
             System.out.println("Bogie ID " + key + " NOT FOUND.");
         }
-
-        System.out.println("\nSystem ready for further operations.");
-
-        scanner.close();
     }
 }
