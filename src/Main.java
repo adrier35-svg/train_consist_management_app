@@ -1,4 +1,5 @@
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrainConsistApp {
 
@@ -7,38 +8,28 @@ public class TrainConsistApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Initialize LinkedHashSet for ordered + unique bogies
-        LinkedHashSet<String> trainFormation = new LinkedHashSet<>();
-        System.out.println("Train formation initialized using LinkedHashSet.");
+        // Initialize HashMap for bogie-capacity mapping
+        Map<String, Integer> bogieCapacityMap = new HashMap<>();
+        System.out.println("Bogie-capacity mapping initialized.");
 
-        // --- Add Bogies ---
-        System.out.println("\nAdding bogies...");
+        // --- Add Bogie Capacities ---
+        System.out.println("\nAdding bogie capacities...");
 
-        addBogie(trainFormation, "Engine");
-        addBogie(trainFormation, "Sleeper");
-        addBogie(trainFormation, "Cargo");
-        addBogie(trainFormation, "Guard");
+        bogieCapacityMap.put("Sleeper", 72);
+        bogieCapacityMap.put("AC Chair", 78);
+        bogieCapacityMap.put("First Class", 24);
 
-        // Attempt duplicate
-        System.out.println("\nAttempting to add duplicate 'Sleeper'...");
-        addBogie(trainFormation, "Sleeper");
+        // --- Display Mapping ---
+        System.out.println("\nBogie Capacity Details:");
 
-        // Display Final Formation
-        System.out.println("\nFinal train formation (in order):");
-        System.out.println(trainFormation);
+        for (Map.Entry<String, Integer> entry : bogieCapacityMap.entrySet()) {
+            String bogie = entry.getKey();
+            Integer capacity = entry.getValue();
+
+            System.out.println(bogie + " -> Capacity: " + capacity);
+        }
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
-    }
-
-    // Helper method to show duplicate handling
-    public static void addBogie(LinkedHashSet<String> set, String bogie) {
-        boolean added = set.add(bogie);
-
-        if (added) {
-            System.out.println("Attached bogie: " + bogie);
-        } else {
-            System.out.println("Duplicate ignored: " + bogie);
-        }
     }
 }
