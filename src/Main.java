@@ -1,19 +1,17 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-// Bogie class (Custom Object)
+// Bogie class
 class Bogie {
     String name;
     int capacity;
 
-    // Constructor
     public Bogie(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
     }
 
-    // toString() for easy printing
     @Override
     public String toString() {
         return name + " (Capacity: " + capacity + ")";
@@ -27,29 +25,27 @@ public class TrainConsistApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create List of Bogies
+        // Create List of Bogies (from UC7)
         List<Bogie> bogies = new ArrayList<>();
-        System.out.println("Passenger bogies initialized.");
 
-        // --- Add Bogies ---
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 78));
         bogies.add(new Bogie("First Class", 24));
 
-        // Display before sorting
-        System.out.println("\nBefore Sorting:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
-        }
+        // Display original list
+        System.out.println("\nAll Bogies:");
+        bogies.forEach(System.out::println);
 
-        // --- Sort using Comparator (by capacity) ---
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+        // --- UC8: Stream Filtering ---
+        System.out.println("\nFiltering bogies with capacity > 60...");
 
-        // Display after sorting
-        System.out.println("\nAfter Sorting (by Capacity):");
-        for (Bogie b : bogies) {
-            System.out.println(b);
-        }
+        List<Bogie> filteredBogies = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+
+        // Display filtered result
+        System.out.println("\nFiltered Bogies:");
+        filteredBogies.forEach(System.out::println);
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
