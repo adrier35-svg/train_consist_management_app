@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 
 public class TrainConsistApp {
 
@@ -7,36 +7,38 @@ public class TrainConsistApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Initialize LinkedList for train consist
-        LinkedList<String> trainConsist = new LinkedList<>();
-        System.out.println("Train consist initialized using LinkedList.");
+        // Initialize LinkedHashSet for ordered + unique bogies
+        LinkedHashSet<String> trainFormation = new LinkedHashSet<>();
+        System.out.println("Train formation initialized using LinkedHashSet.");
 
         // --- Add Bogies ---
         System.out.println("\nAdding bogies...");
 
-        trainConsist.add("Engine");
-        trainConsist.add("Sleeper");
-        trainConsist.add("AC");
-        trainConsist.add("Cargo");
-        trainConsist.add("Guard");
+        addBogie(trainFormation, "Engine");
+        addBogie(trainFormation, "Sleeper");
+        addBogie(trainFormation, "Cargo");
+        addBogie(trainFormation, "Guard");
 
-        System.out.println("Initial consist: " + trainConsist);
+        // Attempt duplicate
+        System.out.println("\nAttempting to add duplicate 'Sleeper'...");
+        addBogie(trainFormation, "Sleeper");
 
-        // --- Insert Pantry Car at position 2 ---
-        System.out.println("\nInserting 'Pantry Car' at position 2...");
-        trainConsist.add(2, "Pantry Car");
-
-        System.out.println("After insertion: " + trainConsist);
-
-        // --- Remove first and last bogie ---
-        System.out.println("\nRemoving first and last bogies...");
-        trainConsist.removeFirst();
-        trainConsist.removeLast();
-
-        // Final Consist
-        System.out.println("Final train consist: " + trainConsist);
+        // Display Final Formation
+        System.out.println("\nFinal train formation (in order):");
+        System.out.println(trainFormation);
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
+    }
+
+    // Helper method to show duplicate handling
+    public static void addBogie(LinkedHashSet<String> set, String bogie) {
+        boolean added = set.add(bogie);
+
+        if (added) {
+            System.out.println("Attached bogie: " + bogie);
+        } else {
+            System.out.println("Duplicate ignored: " + bogie);
+        }
     }
 }
