@@ -1,5 +1,5 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 // Bogie class
 class Bogie {
@@ -30,26 +30,20 @@ public class TrainConsistApp {
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 78));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 78));
 
-        // Display original list
-        System.out.println("\nAll Bogies:");
+        // Display bogies
+        System.out.println("\nTrain Bogies:");
         bogies.forEach(System.out::println);
 
-        // --- UC9: Grouping ---
-        System.out.println("\nGrouping bogies by name...");
+        // --- UC10: Aggregate Capacity ---
+        System.out.println("\nCalculating total seating capacity...");
 
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        int totalCapacity = bogies.stream()
+                .map(b -> b.capacity)        // Extract capacities
+                .reduce(0, Integer::sum);   // Sum them
 
-        // Display grouped result
-        System.out.println("\nGrouped Bogies:");
-
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-            System.out.println("\nCategory: " + entry.getKey());
-            entry.getValue().forEach(System.out::println);
-        }
+        // Display result
+        System.out.println("Total Seating Capacity: " + totalCapacity);
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
