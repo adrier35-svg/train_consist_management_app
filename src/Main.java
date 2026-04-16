@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class TrainConsistApp {
 
@@ -8,37 +7,36 @@ public class TrainConsistApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Initialize HashSet for unique bogie IDs
-        Set<String> bogieSet = new HashSet<>();
-        System.out.println("Train consist (unique bogie IDs) initialized.");
+        // Initialize LinkedList for train consist
+        LinkedList<String> trainConsist = new LinkedList<>();
+        System.out.println("Train consist initialized using LinkedList.");
 
-        // --- UC3: Add Bogie IDs ---
-        System.out.println("\nAdding bogie IDs...");
+        // --- Add Bogies ---
+        System.out.println("\nAdding bogies...");
 
-        addBogie(bogieSet, "B101");
-        addBogie(bogieSet, "B102");
-        addBogie(bogieSet, "B103");
-        addBogie(bogieSet, "B101"); // Duplicate
-        addBogie(bogieSet, "B102"); // Duplicate
+        trainConsist.add("Engine");
+        trainConsist.add("Sleeper");
+        trainConsist.add("AC");
+        trainConsist.add("Cargo");
+        trainConsist.add("Guard");
 
-        // Display Unique Bogies
-        System.out.println("\nUnique bogie IDs in train:");
-        for (String bogie : bogieSet) {
-            System.out.println(bogie);
-        }
+        System.out.println("Initial consist: " + trainConsist);
+
+        // --- Insert Pantry Car at position 2 ---
+        System.out.println("\nInserting 'Pantry Car' at position 2...");
+        trainConsist.add(2, "Pantry Car");
+
+        System.out.println("After insertion: " + trainConsist);
+
+        // --- Remove first and last bogie ---
+        System.out.println("\nRemoving first and last bogies...");
+        trainConsist.removeFirst();
+        trainConsist.removeLast();
+
+        // Final Consist
+        System.out.println("Final train consist: " + trainConsist);
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
-    }
-
-    // Helper method to add bogie with duplicate check behavior
-    public static void addBogie(Set<String> set, String bogieId) {
-        boolean added = set.add(bogieId);
-
-        if (added) {
-            System.out.println("Added bogie: " + bogieId);
-        } else {
-            System.out.println("Duplicate ignored: " + bogieId);
-        }
     }
 }
