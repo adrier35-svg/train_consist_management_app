@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // Bogie class
@@ -25,27 +24,32 @@ public class TrainConsistApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create List of Bogies (from UC7)
+        // Create Bogie List
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 78));
         bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 78));
 
         // Display original list
         System.out.println("\nAll Bogies:");
         bogies.forEach(System.out::println);
 
-        // --- UC8: Stream Filtering ---
-        System.out.println("\nFiltering bogies with capacity > 60...");
+        // --- UC9: Grouping ---
+        System.out.println("\nGrouping bogies by name...");
 
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        // Display filtered result
-        System.out.println("\nFiltered Bogies:");
-        filteredBogies.forEach(System.out::println);
+        // Display grouped result
+        System.out.println("\nGrouped Bogies:");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("\nCategory: " + entry.getKey());
+            entry.getValue().forEach(System.out::println);
+        }
 
         // Program continues
         System.out.println("\nSystem ready for further operations.");
